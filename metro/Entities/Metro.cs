@@ -44,5 +44,9 @@ namespace metro.Entities
             ret.Sort((a,b) => flag ? (a.Pos - b.Pos) : (b.Pos - a.Pos));
             return ret;
         }
+
+        public List<Station> GetStations(){
+            return this.stations;
+        }
     }
 }
