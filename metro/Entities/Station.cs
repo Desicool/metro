@@ -19,7 +19,7 @@ namespace metro.Entities
             set;
         }
 
-        public int Metro
+        public string Metro
         {
             get;
             set;
