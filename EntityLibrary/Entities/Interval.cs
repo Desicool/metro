@@ -11,8 +11,8 @@ namespace metro.Entities
         public string end;
         public Interval(string b, string e)
         {
-            string = b;
-            string = e;
+            begin = b;
+            end = e;
         }
     }
 }

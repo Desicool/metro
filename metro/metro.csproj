@@ -16,5 +16,8 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EntityLibrary\EntityLibrary.csproj" />
+    <ProjectReference Include="..\AzureStorageHelper\AzureStorageHelper.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
   </ItemGroup>
 </Project>

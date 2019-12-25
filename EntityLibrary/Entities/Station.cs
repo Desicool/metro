@@ -7,7 +7,15 @@ namespace metro.Entities
         {
         }
 
-        public int Id
+        public Station(string id,string name,string metro,int pos)
+        {
+            Id = id;
+            Name = name;
+            Metro = metro;
+            Pos = pos;
+        }
+
+        public string Id
         {
             get;
             set;
@@ -19,7 +27,7 @@ namespace metro.Entities
             set;
         }
 
-        public int Metro
+        public string Metro
         {
             get;
             set;

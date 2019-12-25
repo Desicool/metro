@@ -15,7 +15,6 @@ namespace metro.Initialize
         private static readonly List<List<Edge>> edges = new List<List<Edge>>();
         public static List<int> dis = new List<int>();
         private static List<int> from = new List<int>();
-        private static List<int> to = new List<int>();
         private int end;
         private int start;
         private int k = 3;
@@ -34,26 +33,36 @@ namespace metro.Initialize
                     edges.Add(new List<Edge>());
                     dis.Add(19260817);
                     from.Add(index);
-                    to.Add(index);
+                    Console.Out.Write($"{u.Id},{u.Name}\r\n");
                 }
                 );
                 for (int i = 1; i < stas.Count(); i++)
                 {
-                    edges[stationDic[stas[i - 1].Id]].Add(new Edge(stationDic[stas[i - 1].Id],stationDic[stas[i].Id],1));
-                    edges[stationDic[stas[i].Id]].Add(new Edge(stationDic[stas[i].Id],stationDic[stas[i - 1].Id],1));
+                    edges[stationDic[stas[i - 1].Id]].Add(new Edge(stationDic[stas[i - 1].Id],stationDic[stas[i].Id],10));
+                    edges[stationDic[stas[i].Id]].Add(new Edge(stationDic[stas[i].Id],stationDic[stas[i - 1].Id],10));
                 }
             }
             );
-            var transferStaions = TransferStation.transferStationList;
-            transferStaions.ForEach(x =>
+            var trans = stationList.GroupBy(u => u.Name).Where(u => u.Count() > 1).ToList();
+            trans.ForEach(u =>
             {
-                for (int i = 0; i < x.Count(); i++)
+                var enumerator = u.GetEnumerator();
+                while (enumerator.MoveNext())
                 {
-                    for (int j = 0; j < x.Count(); j++)
+                    var temp = enumerator;
+                    var node = enumerator.Current;
+                    while (enumerator.MoveNext())
                     {
-                        if (i == j) continue;
-                        edges[stationDic[x[i]]].Add(new Edge(stationDic[x[i]],stationDic[x[j]],0));
+                        if (node != enumerator.Current)
+                        {
+                            {
+                                edges[stationDic[node.Id]].Add(new Edge(stationDic[node.Id], stationDic[enumerator.Current.Id], 16));
+                                edges[stationDic[enumerator.Current.Id]].Add(new Edge(stationDic[enumerator.Current.Id], stationDic[node.Id], 16));
+                            }
+                            
+                        }
                     }
+                    enumerator = temp;
                 }
             });
         }
@@ -71,6 +80,7 @@ namespace metro.Initialize
                 Dijkstra(j);
                 for (int i = 0; i < stationList.Count; i++)
                 {
+                    if (i == j) continue;
                     if (stationList[i].Metro == stationList[j].Metro)
                     {
                         Interval route = new Interval(stationList[i].Id, stationList[j].Id);
@@ -79,14 +89,12 @@ namespace metro.Initialize
                     else
                     {
                         start = i;
-                        for (int x = 0; x < stationList.Count; x++)
-                        {
-                            to[x] = x;
-                        }
+                        k = 3;
                         BFS(i);
                     }
                 }
             }
+            Console.Out.Write("Finished");
         }
 
         private void Dijkstra(int a)
@@ -118,50 +126,50 @@ namespace metro.Initialize
         private void BFS(int a)
         {//BFS
             var que = new PriorityQueue<Node>(new Comparer2());
-            que.Push(new Node(a, 0));
+            que.Push(new Node(a, 0, new List<int>()));
             while (que.Count > 0)
             {
                 Node node = que.Top();
                 que.Pop();
+                var to = node.from;
                 if (node.to == end)
                 {//到达终点次数
-                    BuildRoute(a);
+                    BuildRoute(a,node.from);
                     k--;
                     if (k == 0)
                     {
                         return;
                     }
                 }
+                to.Add(node.to);
                 for (int i = 0; i < edges[node.to].Count(); i++)
                 {//扩散（跑反向边）
                     var e = edges[node.to][i];
-                    to[e.v] = node.to;
-                    que.Push(new Node(e.v, node.value + e.val));
+                    if (to[to.Count - 1] == e.v) continue;//禁止回退
+                    if (to.Select(u => stationList[u]).Where(u => u.Name == stationList[e.v].Name).Count() > 2)//禁止复读
+                        continue;
+                    que.Push(new Node(e.v, node.value + e.val,new List<int>(to.ToArray())));
                 }
             }
         }
 
-        private void BuildRoute(int a)
+        private void BuildRoute(int a,List<int> to)
         {
             List<Station> sta = new List<Station>();
-            int t = a;
-            while(a != start)
-            {
-                sta.Add(stationList[a]);
-                a = to[a];
-            }
-            sta.Add(stationList[start]);
-            sta.Reverse();
-            a = from[t];
-            while(a != end)
-            {
-                sta.Add(stationList[a]);
-                a = from[a];
-            }
+            to.ForEach(u => sta.Add(stationList[u]));
+
             sta.Add(stationList[end]);
+
+            for(int i = 0;i < sta.Count; i++)
+            {
+                Console.Out.Write($"{sta[i].Name},");
+            }
+            Console.Out.WriteLine();
+
             List<Interval> ints = new List<Interval>();
             int b = 0;
-            for(int i = 1;i < sta.Count - 1; i++)
+            if (sta[0].Name == sta[1].Name) b = 1;
+            for(int i = b + 1;i < sta.Count - 1; i++)
             {
                 if (sta[i].Metro == sta[i - 1].Metro && sta[i].Metro == sta[i + 1].Metro) continue;
                 if (b == -1) b = i;
@@ -171,6 +179,7 @@ namespace metro.Initialize
                     b = -1;
                 }
             }
+            if (b != -1)
             ints.Add(new Interval(sta[b].Id, sta[sta.Count - 1].Id));
             //SAVE ALL INTERVALS
             SaveRoute(stationList[start].Id, stationList[end].Id, ints);
@@ -178,7 +187,13 @@ namespace metro.Initialize
 
         public void SaveRoute(string s,string e,List<Interval> route)
         {
-            Console.Out.Write("From:" + s + " To:" + e + route);
+            string rt = "[{" + route[0].begin + ":" + stationList[stationDic[route[0].begin]].Name + "," + route[0].end + ":" + stationList[stationDic[route[0].end]].Name + "}";
+            for(int i = 1;i < route.Count; i++)
+            {
+                rt += ",{" + route[i].begin + ":" + stationList[stationDic[route[i].begin]].Name + "," + route[i].end + ":" + stationList[stationDic[route[i].end]].Name + "}";
+            }
+            rt += "]";
+            Console.Out.Write($"From:{s} To:{e} \r\n{rt}\r\n");
         }
     }
 
@@ -196,10 +211,12 @@ namespace metro.Initialize
     struct Node
     {
         public int to,value;
-        public Node(int a, int b)
+        public List<int> from;
+        public Node(int a, int b, List<int> c)
         {
             to = a;
             value = b;
+            from = c;
         }
     };
 
@@ -271,7 +288,7 @@ namespace metro.Initialize
 
     class Comparer2 : IComparer<Node>
     {
-        public int Compare([AllowNull] Node x, [AllowNull] Node y)
+        public int Compare([AllowNull] Node y, [AllowNull] Node x)
         {
             return x.value + KthShortest.dis[x.to] - (y.value + KthShortest.dis[y.to]);
         }

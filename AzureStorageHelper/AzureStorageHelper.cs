@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Azure.Storage;
 using Microsoft.Azure.Storage.Blob;
-namespace AzureStorageHelper
+namespace metro.AzureStorageHelper
 {
     public class AzureStorageHelper
     {
