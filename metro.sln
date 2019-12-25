@@ -3,7 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29613.14
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "metro", "metro\metro.csproj", "{706EF0A4-5089-4549-ABD4-589165AB8AFE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "metro", "metro\metro.csproj", "{706EF0A4-5089-4549-ABD4-589165AB8AFE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EntityLibrary", "EntityLibrary\EntityLibrary.csproj", "{A39E0080-C579-4E3F-B17A-0F066CE62529}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Initialize", "Initialize\Initialize.csproj", "{0C951593-6882-45DA-AE3D-7E0A4013B8ED}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureStorageHelper", "AzureStorageHelper\AzureStorageHelper.csproj", "{AC4C012F-86EA-407D-94E4-98856CCF858D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +21,18 @@ Global
 		{706EF0A4-5089-4549-ABD4-589165AB8AFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{706EF0A4-5089-4549-ABD4-589165AB8AFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{706EF0A4-5089-4549-ABD4-589165AB8AFE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A39E0080-C579-4E3F-B17A-0F066CE62529}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A39E0080-C579-4E3F-B17A-0F066CE62529}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A39E0080-C579-4E3F-B17A-0F066CE62529}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A39E0080-C579-4E3F-B17A-0F066CE62529}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C951593-6882-45DA-AE3D-7E0A4013B8ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C951593-6882-45DA-AE3D-7E0A4013B8ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C951593-6882-45DA-AE3D-7E0A4013B8ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C951593-6882-45DA-AE3D-7E0A4013B8ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC4C012F-86EA-407D-94E4-98856CCF858D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC4C012F-86EA-407D-94E4-98856CCF858D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC4C012F-86EA-407D-94E4-98856CCF858D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC4C012F-86EA-407D-94E4-98856CCF858D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
