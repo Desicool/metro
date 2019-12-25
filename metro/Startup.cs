@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AzureStorageHelper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -18,6 +19,9 @@ namespace metro
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+
+            var azureStorageHelper = new AzureStorageHelper.AzureStorageHelper();
+            azureStorageHelper.Connect();
         }
 
         public IConfiguration Configuration { get; }
@@ -47,5 +51,6 @@ namespace metro
                 endpoints.MapControllers();
             });
         }
+
     }
 }
