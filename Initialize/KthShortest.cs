@@ -202,17 +202,6 @@ namespace metro.Initialize
         }
     }
 
-    public struct Route
-    {
-        public List<Interval> intervals;
-        public int size;
-        public Route(List<Interval> i,int s = 114)
-        {
-            intervals = i;
-            size = s;
-        }
-    };
-
     struct Edge
     {
         public int u, v, val;
