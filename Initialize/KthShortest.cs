@@ -33,7 +33,6 @@ namespace metro.Initialize
                     edges.Add(new List<Edge>());
                     dis.Add(19260817);
                     from.Add(index);
-                    Console.Out.Write($"{u.Id},{u.Name}\r\n");
                 }
                 );
                 for (int i = 1; i < stas.Count(); i++)
@@ -198,7 +197,6 @@ namespace metro.Initialize
             Console.Out.Write($"From:{s} To:{e} \r\n{rt}\r\n");*/
             var pair = KeyValuePair.Create(s, e);
             if (!routeDic.ContainsKey(pair)) routeDic.Add(pair, new List<Route>());
-            Console.Out.Write(pair);
             routeDic[pair].Add(new Route(route,sz));
             routeDic[pair].Sort((a,b) => a.size - b.size);
         }

@@ -30,7 +30,7 @@ namespace metro.Controllers
         [HttpGet("transfer/{start}/{end}")]
         public IActionResult getTransfer(string start,string end)
         {
-            return Ok(KthShortest.routeDic.Keys);
+            return Ok(KthShortest.routeDic[KeyValuePair.Create(start,end)]);
         }
     }
 }
