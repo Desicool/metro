@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using metro.Initialize;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -25,6 +26,11 @@ namespace metro.Controllers
                 .GetStations()
                 .Select(s => s.Name)
                 .ToList());
+        }
+        [HttpGet("transfer/{start}/{end}")]
+        public IActionResult getTransfer(string start,string end)
+        {
+            return Ok(KthShortest.routeDic[KeyValuePair.Create(start,end)]);
         }
     }
 }

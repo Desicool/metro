@@ -33,7 +33,6 @@ namespace metro.Initialize
                     edges.Add(new List<Edge>());
                     dis.Add(19260817);
                     from.Add(index);
-                    Console.Out.Write($"{u.Id},{u.Name}\r\n");
                 }
                 );
                 for (int i = 1; i < stas.Count(); i++)
@@ -184,10 +183,10 @@ namespace metro.Initialize
             if (b != -1)
             ints.Add(new Interval(sta[b], sta[sta.Count - 1]));
             //SAVE ALL INTERVALS
-            SaveRoute(stationList[start].Id, stationList[end].Id, ints);
+            SaveRoute(stationList[start].Id, stationList[end].Id, ints,sta.Count - ints.Count + 1);
         }
 
-        public void SaveRoute(string s,string e,List<Interval> route)
+        public void SaveRoute(string s,string e,List<Interval> route,int sz = 114)
         {
             /*string rt = "[{" + route[0].begin + ":" + stationList[stationDic[route[0].begin]].Name + "," + route[0].end + ":" + stationList[stationDic[route[0].end]].Name + "}";
             for(int i = 1;i < route.Count; i++)
@@ -198,17 +197,19 @@ namespace metro.Initialize
             Console.Out.Write($"From:{s} To:{e} \r\n{rt}\r\n");*/
             var pair = KeyValuePair.Create(s, e);
             if (!routeDic.ContainsKey(pair)) routeDic.Add(pair, new List<Route>());
-            routeDic[pair].Add(new Route(route));
-            routeDic[pair].Sort((a,b) => a.intervals.Count - b.intervals.Count);
+            routeDic[pair].Add(new Route(route,sz));
+            routeDic[pair].Sort((a,b) => a.size - b.size);
         }
     }
 
     public struct Route
     {
         public List<Interval> intervals;
-        public Route(List<Interval> i)
+        public int size;
+        public Route(List<Interval> i,int s = 114)
         {
             intervals = i;
+            size = s;
         }
     };
 
