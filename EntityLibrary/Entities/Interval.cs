@@ -7,8 +7,8 @@ namespace metro.Entities
     // used for algorithm result
     public class Interval
     {
-        public Station begin;
-        public Station end;
+        public Station begin { get; }
+        public Station end { get; }
         public Interval(Station b, Station e)
         {
             begin = b;

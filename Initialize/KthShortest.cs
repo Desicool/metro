@@ -204,7 +204,7 @@ namespace metro.Initialize
 
     public struct Route
     {
-        public List<Interval> intervals;
+        public List<Interval> intervals { get; }
         public int size;
         public Route(List<Interval> i,int s = 114)
         {

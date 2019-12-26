@@ -15,8 +15,8 @@ namespace metro
 
         public static void Main(string[] args)
         {
-            KthShortest.Init(EntityFactory.metros);
-            var kshortest = new KthShortest();
+            //KthShortest.Init(EntityFactory.metros);
+            //var kshortest = new KthShortest();
             CreateHostBuilder(args).Build().Run();
         }
 
