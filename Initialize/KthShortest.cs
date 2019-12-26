@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace metro.Initialize
 {
@@ -84,7 +83,7 @@ namespace metro.Initialize
                     if (i == j) continue;
                     if (stationList[i].Metro == stationList[j].Metro)
                     {
-                        Interval route = new Interval(stationList[i].Id, stationList[j].Id);
+                        Interval route = new Interval(stationList[i], stationList[j]);
                         SaveRoute(stationList[i].Id, stationList[j].Id,new List<Interval> { route });
                     }
                     else
@@ -178,12 +177,12 @@ namespace metro.Initialize
                 if (b == -1) b = i;
                 else
                 {
-                    ints.Add(new Interval(sta[b].Id, sta[i].Id));
+                    ints.Add(new Interval(sta[b], sta[i]));
                     b = -1;
                 }
             }
             if (b != -1)
-            ints.Add(new Interval(sta[b].Id, sta[sta.Count - 1].Id));
+            ints.Add(new Interval(sta[b], sta[sta.Count - 1]));
             //SAVE ALL INTERVALS
             SaveRoute(stationList[start].Id, stationList[end].Id, ints);
         }
