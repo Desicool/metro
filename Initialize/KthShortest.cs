@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace metro.Initialize
 {
@@ -13,6 +12,7 @@ namespace metro.Initialize
         private static readonly List<Station> stationList = new List<Station>();
         private static readonly List<string> stations = new List<string>();
         private static readonly List<List<Edge>> edges = new List<List<Edge>>();
+        public static Dictionary<KeyValuePair<string, string>, List<Route>> routeDic = new Dictionary<KeyValuePair<string, string>, List<Route>>();
         public static List<int> dis = new List<int>();
         private static List<int> from = new List<int>();
         private int end;
@@ -53,7 +53,7 @@ namespace metro.Initialize
                     var node = enumerator.Current;
                     while (enumerator.MoveNext())
                     {
-                        if (node != enumerator.Current)
+                        if (node != enumerator.Current && node.Metro != "line4" && enumerator.Current.Metro != "line4")
                         {
                             {
                                 edges[stationDic[node.Id]].Add(new Edge(stationDic[node.Id], stationDic[enumerator.Current.Id], 16));
@@ -83,13 +83,13 @@ namespace metro.Initialize
                     if (i == j) continue;
                     if (stationList[i].Metro == stationList[j].Metro)
                     {
-                        Interval route = new Interval(stationList[i].Id, stationList[j].Id);
+                        Interval route = new Interval(stationList[i], stationList[j]);
                         SaveRoute(stationList[i].Id, stationList[j].Id,new List<Interval> { route });
                     }
                     else
                     {
                         start = i;
-                        k = 3;
+                        k = 10;
                         BFS(i);
                     }
                 }
@@ -140,13 +140,15 @@ namespace metro.Initialize
                     {
                         return;
                     }
+                    continue;
                 }
                 to.Add(node.to);
+                if (to.Count() > 50) continue;
                 for (int i = 0; i < edges[node.to].Count(); i++)
                 {//扩散（跑反向边）
                     var e = edges[node.to][i];
-                    if (to[to.Count - 1] == e.v) continue;//禁止回退
-                    if (to.Select(u => stationList[u]).Where(u => u.Name == stationList[e.v].Name).Count() > 2)//禁止复读
+                    if (to.Contains(e.v)) continue;//禁止回退
+                    if (to.Select(u => stationList[u]).Where(u => u.Name == stationList[e.v].Name).Count() >= 2)//禁止复读
                         continue;
                     que.Push(new Node(e.v, node.value + e.val,new List<int>(to.ToArray())));
                 }
@@ -159,13 +161,13 @@ namespace metro.Initialize
             to.ForEach(u => sta.Add(stationList[u]));
 
             sta.Add(stationList[end]);
-
+            /*
             for(int i = 0;i < sta.Count; i++)
             {
-                Console.Out.Write($"{sta[i].Name},");
+                Console.Out.Write($"{sta[i].Metro}{sta[i].Name},");
             }
             Console.Out.WriteLine();
-
+            */
             List<Interval> ints = new List<Interval>();
             int b = 0;
             if (sta[0].Name == sta[1].Name) b = 1;
@@ -175,27 +177,40 @@ namespace metro.Initialize
                 if (b == -1) b = i;
                 else
                 {
-                    ints.Add(new Interval(sta[b].Id, sta[i].Id));
+                    ints.Add(new Interval(sta[b], sta[i]));
                     b = -1;
                 }
             }
             if (b != -1)
-            ints.Add(new Interval(sta[b].Id, sta[sta.Count - 1].Id));
+            ints.Add(new Interval(sta[b], sta[sta.Count - 1]));
             //SAVE ALL INTERVALS
             SaveRoute(stationList[start].Id, stationList[end].Id, ints);
         }
 
         public void SaveRoute(string s,string e,List<Interval> route)
         {
-            string rt = "[{" + route[0].begin + ":" + stationList[stationDic[route[0].begin]].Name + "," + route[0].end + ":" + stationList[stationDic[route[0].end]].Name + "}";
+            /*string rt = "[{" + route[0].begin + ":" + stationList[stationDic[route[0].begin]].Name + "," + route[0].end + ":" + stationList[stationDic[route[0].end]].Name + "}";
             for(int i = 1;i < route.Count; i++)
             {
                 rt += ",{" + route[i].begin + ":" + stationList[stationDic[route[i].begin]].Name + "," + route[i].end + ":" + stationList[stationDic[route[i].end]].Name + "}";
             }
             rt += "]";
-            Console.Out.Write($"From:{s} To:{e} \r\n{rt}\r\n");
+            Console.Out.Write($"From:{s} To:{e} \r\n{rt}\r\n");*/
+            var pair = KeyValuePair.Create(s, e);
+            if (!routeDic.ContainsKey(pair)) routeDic.Add(pair, new List<Route>());
+            routeDic[pair].Add(new Route(route));
+            routeDic[pair].Sort((a,b) => a.intervals.Count - b.intervals.Count);
         }
     }
+
+    public struct Route
+    {
+        public List<Interval> intervals;
+        public Route(List<Interval> i)
+        {
+            intervals = i;
+        }
+    };
 
     struct Edge
     {
