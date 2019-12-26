@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using metro.Entities;
 using Newtonsoft.Json;
@@ -102,41 +101,14 @@ namespace metro.Initialize
                 new Station("4-15","临平路","line4",15),
                 new Station("4-16","海伦路","line4",16),
                 new Station("4-17","宝山路","line4",17),
-                new Station("4-18","上海火车","line4",18),
+                new Station("4-18","上海火车站","line4",18),
                 new Station("4-19","中潭路","line4",19),
                 new Station("4-20","镇坪路","line4",20),
                 new Station("4-21","曹杨路","line4",21),
                 new Station("4-22","金沙江路","line4",22),
                 new Station("4-23","中山公园","line4",23),
                 new Station("4-24","延安西路","line4",24),
-                new Station("4-25","虹桥路","line4",25),
-                new Station("4-26","宜山路","line4",26),
-                new Station("4-27","上海体育馆","line4",27),
-                new Station("4-28","宜山路","line4",28),
-                new Station("4-29","上海体育馆","line4",29),
-                new Station("4-30","上海体育场","line4",30),
-                new Station("4-31","东安路","line4",31),
-                new Station("4-32","大木桥路","line4",32),
-                new Station("4-33","鲁班路","line4",33),
-                new Station("4-34","西藏南路","line4",34),
-                new Station("4-35","南浦大桥","line4",35),
-                new Station("4-36","塘桥","line4",36),
-                new Station("4-37","蓝村路","line4",37),
-                new Station("4-38","浦电路","line4",38),
-                new Station("4-39","世纪大道","line4",39),
-                new Station("4-40","浦东大道","line4",40),
-                new Station("4-41","杨树浦路","line4",41),
-                new Station("4-42","大连路","line4",42),
-                new Station("4-43","临平路","line4",43),
-                new Station("4-44","海伦路","line4",44),
-                new Station("4-45","宝山路","line4",45),
-                new Station("4-46","上海火车","line4",46),
-                new Station("4-47","中潭路","line4",47),
-                new Station("4-48","镇坪路","line4",48),
-                new Station("4-49","曹杨路","line4",49),
-                new Station("4-50","金沙江路","line4",50),
-                new Station("4-51","中山公园","line4",51),
-                new Station("4-52","延安西路","line4",52)
+                new Station("4-25","虹桥路","line4",25)
             }),
             new Metro("line5","5号线",new List<Station>{
                 new Station("5-0","莘庄","line5",0),
@@ -383,39 +355,39 @@ namespace metro.Initialize
                 new Station("13-4","鹤沙航城","line13",4),
                 new Station("13-5","航头东","line13",5),
                 new Station("13-6","新场","line13",6),
-                new Station("13-7","隆德路站","line13",7),
-                new Station("13-8","武宁路站","line13",8),
-                new Station("13-9","长寿路站","line13",9),
-                new Station("13-10","江宁路站","line13",10),
-                new Station("13-11","汉中路站","line13",11),
-                new Station("13-12","自然博物馆站","line13",12),
-                new Station("13-13","南京西路站","line13",13),
-                new Station("13-14","淮海中路站","line13",14),
-                new Station("13-15","新天地站","line13",15),
-                new Station("13-16","马当路站","line13",16),
-                new Station("13-17","世博会博物馆站","line13",17),
-                new Station("13-18","世博大道站","line13",18),
-                new Station("13-19","长清路站","line13",19),
-                new Station("13-20","成山路站","line13",20),
-                new Station("13-21","东明路站","line13",21),
-                new Station("13-22","华鹏路站","line13",22),
-                new Station("13-23","下南路站","line13",23),
-                new Station("13-24","北蔡站","line13",24),
-                new Station("13-25","陈春路站","line13",25),
-                new Station("13-26","莲溪路站","line13",26),
-                new Station("13-27","华夏中路站","line13",27),
-                new Station("13-28","中科路站","line13",28),
-                new Station("13-29","学林路站","line13",29),
-                new Station("13-30","张江路站","line13",30)
+                new Station("13-7","隆德路","line13",7),
+                new Station("13-8","武宁路","line13",8),
+                new Station("13-9","长寿路","line13",9),
+                new Station("13-10","江宁路","line13",10),
+                new Station("13-11","汉中路","line13",11),
+                new Station("13-12","自然博物馆","line13",12),
+                new Station("13-13","南京西路","line13",13),
+                new Station("13-14","淮海中路","line13",14),
+                new Station("13-15","新天地","line13",15),
+                new Station("13-16","马当路","line13",16),
+                new Station("13-17","世博会博物馆","line13",17),
+                new Station("13-18","世博大道","line13",18),
+                new Station("13-19","长清路","line13",19),
+                new Station("13-20","成山路","line13",20),
+                new Station("13-21","东明路","line13",21),
+                new Station("13-22","华鹏路","line13",22),
+                new Station("13-23","下南路","line13",23),
+                new Station("13-24","北蔡","line13",24),
+                new Station("13-25","陈春路","line13",25),
+                new Station("13-26","莲溪路","line13",26),
+                new Station("13-27","华夏中路","line13",27),
+                new Station("13-28","中科路","line13",28),
+                new Station("13-29","学林路","line13",29),
+                new Station("13-30","张江路","line13",30)
             }),
             new Metro("line16","16号线",new List<Station>{
-                new Station("16-0","虹桥火车站站","line16",0),
-                new Station("16-1","诸光路站","line16",1),
-                new Station("16-2","蟠龙路站","line16",2),
-                new Station("16-3","徐盈路站","line16",3),
-                new Station("16-4","徐泾北城站","line16",4),
-                new Station("16-5","嘉松中路站","line16",5),
-                new Station("16-6","赵巷站","line16",6),
+                new Station("16-0","虹桥火车站","line16",0),
+                new Station("16-1","诸光路","line16",1),
+                new Station("16-2","蟠龙路","line16",2),
+                new Station("16-3","徐盈路","line16",3),
+                new Station("16-4","徐泾北城","line16",4),
+                new Station("16-5","嘉松中路","line16",5),
+                new Station("16-6","赵巷","line16",6),
                 new Station("16-7","野生动物园","line16",7),
                 new Station("16-8","惠南","line16",8),
                 new Station("16-9","惠南东","line16",9),
@@ -428,12 +400,9 @@ namespace metro.Initialize
         static void Main(string[] args)
         {
             KthShortest.Init(metros);
-            //var kshortest = new KthShortest();
+            var kshortest = new KthShortest();
+            /*
             string filePath = "transfer.json";
-            string path = System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase;
-            path = path.Substring(0,path.Length - path.LastIndexOf(@"\"));
-            path = path.Substring(0, path.Length - path.LastIndexOf(@"\"));
-            filePath = $"{path}\\{filePath}";
             if (File.Exists(filePath)) File.Delete(filePath);
             string str = JsonConvert.SerializeObject(KthShortest.routeDic);
             byte[] data = System.Text.Encoding.Default.GetBytes(str);
@@ -441,6 +410,8 @@ namespace metro.Initialize
             {
                 fsWrite.Write(data, 0, data.Length);
             }
+            var helper = new AzureStorageHelper.AzureStorageHelper();
+            helper.Connect();*/
         }
     }
 }

@@ -1,5 +1,8 @@
-﻿using System;
+﻿using Microsoft.WindowsAzure.Storage.Table;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace metro.Entities
@@ -29,4 +32,27 @@ namespace metro.Entities
             size = s;
         }
     };
+
+    public class Transfer : TableEntity
+    {
+        public List<Route> routes { get; set; }
+        public string route { get; set; }
+
+        public Transfer()
+        {
+
+        }
+
+        public Transfer(string start,string end,List<Route> r)
+        {
+            PartitionKey = start;
+            RowKey = end;
+            route = JsonConvert.SerializeObject(r);
+        }
+
+        public void ToRoute()
+        {
+            routes = JsonConvert.DeserializeObject<List<Route>>(route);
+        }
+    }
 }

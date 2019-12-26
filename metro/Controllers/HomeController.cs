@@ -28,9 +28,18 @@ namespace metro.Controllers
                 .ToList());
         }
         [HttpGet("transfer/{start}/{end}")]
-        public IActionResult getTransfer(string start,string end)
+        public async Task<IActionResult> getTransferAsync(string start,string end)
         {
-            return Ok(Program.routeDic[KeyValuePair.Create(start,end)]);
+            var transfer = await AzureStorageHelper.AzureStorageHelper.RetrieveEntityUsingPointQueryAsync(start, end);
+            return Ok(transfer.route);
+        }
+
+        [HttpGet("metro/{metroId}/{start}/{end}")]
+        public IActionResult getStationsBetween(string metroId,int start,int end)
+        {
+            return Ok(EntityFactory.metros
+                .FirstOrDefault(u => u.Id == metroId)
+                .GetStationsBetween(start, end));
         }
     }
 }

@@ -35,14 +35,8 @@ namespace metro.Entities
             }
         }
 
-        public List<Station> GetStationsBetween(Station begin,Station end)
+        public List<Station> GetStationsBetween(int bpos,int epos)
         {
-            if (!Stations.Contains(begin) || !Stations.Contains(end))
-            {
-                throw new Exception("Cannot find station");
-            }
-            int bpos = Stations.FindIndex(u => u.Pos == begin.Pos);
-            int epos = Stations.FindIndex(u => u.Pos == end.Pos);
             bool flag = true;
             if (bpos > epos)
             {

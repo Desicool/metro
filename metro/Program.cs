@@ -19,7 +19,6 @@ namespace metro
 
         public static void Main(string[] args)
         {
-            LoadRoute();
             CreateHostBuilder(args).Build().Run();
         }
 
@@ -29,18 +28,5 @@ namespace metro
                 {
                     webBuilder.UseStartup<Startup>();
                 });
-
-        public static void LoadRoute()
-        {
-            string filePath = @"..\..\transfer.json";
-            using (FileStream fsRead = new FileStream(filePath, FileMode.Open))
-            {
-                int fsLen = (int)fsRead.Length;
-                byte[] heByte = new byte[fsLen];
-                int r = fsRead.Read(heByte, 0, heByte.Length);
-                string myStr = System.Text.Encoding.UTF8.GetString(heByte);
-                routeDic = JsonConvert.DeserializeObject<Dictionary<KeyValuePair<string, string>, List<Route>>>(myStr);
-            }
-        }
     }
 }

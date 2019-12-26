@@ -12,9 +12,8 @@ namespace metro.Initialize
         private static readonly List<Station> stationList = new List<Station>();
         private static readonly List<string> stations = new List<string>();
         private static readonly List<List<Edge>> edges = new List<List<Edge>>();
-        public static Dictionary<KeyValuePair<string, string>, List<Route>> routeDic = new Dictionary<KeyValuePair<string, string>, List<Route>>();
+        private List<Route> routes = new List<Route>();
         public static List<int> dis = new List<int>();
-        private static List<int> from = new List<int>();
         private int end;
         private int start;
         private int k = 3;
@@ -32,13 +31,17 @@ namespace metro.Initialize
                     stationList.Add(u);
                     edges.Add(new List<Edge>());
                     dis.Add(19260817);
-                    from.Add(index);
                 }
                 );
                 for (int i = 1; i < stas.Count(); i++)
                 {
                     edges[stationDic[stas[i - 1].Id]].Add(new Edge(stationDic[stas[i - 1].Id],stationDic[stas[i].Id],10));
                     edges[stationDic[stas[i].Id]].Add(new Edge(stationDic[stas[i].Id],stationDic[stas[i - 1].Id],10));
+                }
+                if (x.Id == "line4")
+                {
+                    edges[stationDic[stas[0].Id]].Add(new Edge(stationDic[stas[0].Id], stationDic[stas[stas.Count() - 1].Id], 10));
+                    edges[stationDic[stas[stas.Count() - 1].Id]].Add(new Edge(stationDic[stas[stas.Count() - 1].Id], stationDic[stas[0].Id], 10));
                 }
             }
             );
@@ -52,14 +55,8 @@ namespace metro.Initialize
                     var node = enumerator.Current;
                     while (enumerator.MoveNext())
                     {
-                        if (node != enumerator.Current && node.Metro != "line4" && enumerator.Current.Metro != "line4")
-                        {
-                            {
-                                edges[stationDic[node.Id]].Add(new Edge(stationDic[node.Id], stationDic[enumerator.Current.Id], 16));
-                                edges[stationDic[enumerator.Current.Id]].Add(new Edge(stationDic[enumerator.Current.Id], stationDic[node.Id], 16));
-                            }
-                            
-                        }
+                        edges[stationDic[node.Id]].Add(new Edge(stationDic[node.Id], stationDic[enumerator.Current.Id], 16));
+                        edges[stationDic[enumerator.Current.Id]].Add(new Edge(stationDic[enumerator.Current.Id], stationDic[node.Id], 16));
                     }
                     enumerator = temp;
                 }
@@ -68,29 +65,39 @@ namespace metro.Initialize
 
         public KthShortest()
         {
-            for(int j = 0;j < stationList.Count; j++)
+            var ct = DateTime.Now;
+            //for (int j = 0;j < stationList.Count; j++)
+            int j = stationList.Count - 1;
             {
+                Console.Out.WriteLine($"{stationList[j].Metro},{stationList[j].Name}={(DateTime.Now - ct).TotalSeconds}");
+                ct = DateTime.Now;
                 end = j;
                 for(int i = 0;i < stationList.Count; i++)
                 {
                     dis[i] = 19260817;
-                    from[i] = i;
                 }
                 Dijkstra(j);
                 for (int i = 0; i < stationList.Count; i++)
                 {
+                    start = i;
                     if (i == j) continue;
                     if (stationList[i].Metro == stationList[j].Metro)
                     {
                         Interval route = new Interval(stationList[i], stationList[j]);
-                        SaveRoute(stationList[i].Id, stationList[j].Id,new List<Interval> { route });
+                        var len = stationList[j].Pos - stationList[i].Pos;
+                        SaveRoute(new List<Interval> { route }, (len > 0 ? len : -len));
                     }
                     else
                     {
-                        start = i;
-                        k = 10;
+                        var ct2 = DateTime.Now;
+                        k = 5;
                         BFS(i);
+                        if ((DateTime.Now - ct2).TotalSeconds > 0.3)
+                        {
+                            Console.Out.WriteLine($"From{stationList[i].Metro},{stationList[i].Name}To{stationList[j].Metro},{stationList[j].Name}={(DateTime.Now - ct2).TotalSeconds}");
+                        }
                     }
+                    SaveTransfer(stationList[i].Id, stationList[j].Id);
                 }
             }
             Console.Out.Write("Finished");
@@ -115,7 +122,6 @@ namespace metro.Initialize
                     if (!vis[e.v] && dis[e.v] > num + e.val)
                     {
                         dis[e.v] = num + e.val;
-                        from[e.v] = p.Value;
                         que.Push(new KeyValuePair<int, int>(dis[e.v], e.v));
                     }
                 }
@@ -124,6 +130,7 @@ namespace metro.Initialize
 
         private void BFS(int a)
         {//BFS
+            var mx = dis[a]/10 + 5;
             var que = new PriorityQueue<Node>(new Comparer2());
             que.Push(new Node(a, 0, new List<int>()));
             while (que.Count > 0)
@@ -142,13 +149,13 @@ namespace metro.Initialize
                     continue;
                 }
                 to.Add(node.to);
-                if (to.Count() > 50) continue;
+                if (to.Count() > mx) return;
                 for (int i = 0; i < edges[node.to].Count(); i++)
                 {//扩散（跑反向边）
                     var e = edges[node.to][i];
                     if (to.Contains(e.v)) continue;//禁止回退
-                    if (to.Select(u => stationList[u]).Where(u => u.Name == stationList[e.v].Name).Count() >= 2)//禁止复读
-                        continue;
+                    /*if (to.Select(u => stationList[u]).Where(u => u.Name == stationList[e.v].Name).Count() >= 2)//禁止复读
+                        continue;*/
                     que.Push(new Node(e.v, node.value + e.val,new List<int>(to.ToArray())));
                 }
             }
@@ -183,22 +190,21 @@ namespace metro.Initialize
             if (b != -1)
             ints.Add(new Interval(sta[b], sta[sta.Count - 1]));
             //SAVE ALL INTERVALS
-            SaveRoute(stationList[start].Id, stationList[end].Id, ints,sta.Count - ints.Count + 1);
+            SaveRoute(ints,sta.Count - ints.Count + 1);
         }
 
-        public void SaveRoute(string s,string e,List<Interval> route,int sz = 114)
+        public void SaveRoute(List<Interval> route,int sz = 114)
         {
-            /*string rt = "[{" + route[0].begin + ":" + stationList[stationDic[route[0].begin]].Name + "," + route[0].end + ":" + stationList[stationDic[route[0].end]].Name + "}";
-            for(int i = 1;i < route.Count; i++)
-            {
-                rt += ",{" + route[i].begin + ":" + stationList[stationDic[route[i].begin]].Name + "," + route[i].end + ":" + stationList[stationDic[route[i].end]].Name + "}";
-            }
-            rt += "]";
-            Console.Out.Write($"From:{s} To:{e} \r\n{rt}\r\n");*/
-            var pair = KeyValuePair.Create(s, e);
-            if (!routeDic.ContainsKey(pair)) routeDic.Add(pair, new List<Route>());
-            routeDic[pair].Add(new Route(route,sz));
-            routeDic[pair].Sort((a,b) => a.size - b.size);
+            routes.Add(new Route(route, sz));
+        }
+
+        public void SaveTransfer(string s, string e)
+        {
+            var r = routes;
+            r.Sort((a, b) => a.size - b.size);
+            var transfer = new Transfer(s,e, r.Take(3).ToList());
+            AzureStorageHelper.AzureStorageHelper.InsertOrMergeEntityAsync(transfer);
+            routes.Clear();
         }
     }
 
@@ -285,7 +291,7 @@ namespace metro.Initialize
 
     class Comparer1 : IComparer<KeyValuePair<int, int>>
     {
-        public int Compare([AllowNull] KeyValuePair<int, int> x, [AllowNull] KeyValuePair<int, int> y)
+        public int Compare([AllowNull] KeyValuePair<int, int> y, [AllowNull] KeyValuePair<int, int> x)
         {
             return x.Key - y.Key;
         }
