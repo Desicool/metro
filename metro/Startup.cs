@@ -20,8 +20,8 @@ namespace metro
         {
             Configuration = configuration;
 
-            var azureStorageHelper = new AzureStorageHelper.AzureStorageHelper();
-            azureStorageHelper.Connect();
+            //var azureStorageHelper = new AzureStorageHelper.AzureStorageHelper();
+            //azureStorageHelper.Connect();
         }
 
         public IConfiguration Configuration { get; }

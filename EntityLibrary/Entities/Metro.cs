@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
+using System.Text.Json.Serialization;
 
 namespace metro.Entities
 {
@@ -9,44 +11,51 @@ namespace metro.Entities
         {
             this.Id = id;
             this.Name = name;
-            this.stations = stations;
+            this._stations = stations;
         }
-
+        [JsonPropertyName("id")]
         public string Id
         {
             get;
             private set;
         }
-
+        [JsonPropertyName("name")]
         public string Name
         {
             get;
             private set;
         }
-
-        private readonly List<Station> stations;
+        //[JsonPropertyName("stations")]
+        private readonly List<Station> _stations;
+        public List<Station> Stations
+        {
+            get
+            {
+                return _stations;
+            }
+        }
 
         public List<Station> GetStationsBetween(Station begin,Station end)
         {
-            if (!stations.Contains(begin) || !stations.Contains(end))
+            if (!Stations.Contains(begin) || !Stations.Contains(end))
             {
                 throw new Exception("Cannot find station");
             }
-            int bpos = stations.FindIndex(u => u.Pos == begin.Pos);
-            int epos = stations.FindIndex(u => u.Pos == end.Pos);
+            int bpos = Stations.FindIndex(u => u.Pos == begin.Pos);
+            int epos = Stations.FindIndex(u => u.Pos == end.Pos);
             bool flag = true;
             if (bpos > epos)
             {
                 flag = false;
                 bpos = bpos + epos - (epos = bpos);
             }
-            var ret = stations.FindAll(u => u.Pos >= bpos && u.Pos <= epos);
+            var ret = Stations.FindAll(u => u.Pos >= bpos && u.Pos <= epos);
             ret.Sort((a,b) => flag ? (a.Pos - b.Pos) : (b.Pos - a.Pos));
             return ret;
         }
 
         public List<Station> GetStations(){
-            return this.stations;
+            return this.Stations;
         }
     }
 }
