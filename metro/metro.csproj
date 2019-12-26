@@ -19,5 +19,8 @@
     <ProjectReference Include="..\AzureStorageHelper\AzureStorageHelper.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
+    <ProjectReference Include="..\Initialize\Initialize.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
   </ItemGroup>
 </Project>
